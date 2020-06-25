@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Firebase Login</title>
+    <link rel="stylesheet" type="text/css" href="style1.css" />
+</head>
+
+<body>
+    <input type="file" id="photo" class="buttonselect">
+    <img id="image" width="250" height="250" src="https://firebasestorage.googleapis.com/v0/b/visacharity.appspot.com/o/Thu%20Jun%2025%202020%2023%3A50%3A27%20GMT%2B0530%20(India%20Standard%20Time)-Gender_Default.jpg?alt=media&token=a66c34e4-79d8-4384-b779-8a6214a8480b"
+    />
+    <button onclick="uploadImage()" class="buttonupload">Upload Profile Picture</button>
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-analytics.js"></script>
+<!-- <script src="static/js/p5.js"> -->
+<script src="p5.min.js"></script>
+<!-- <script src="p5.js"></script> -->
+
+<script>
+    var imglink = ["https://firebasestorage.googleapis.com/v0/b/visacharity.appspot.com/o/Thu%20Jun%2025%202020%2023%3A50%3A27%20GMT%2B0530%20(India%20Standard%20Time)-Gender_Default.jpg?alt=media&token=a66c34e4-79d8-4384-b779-8a6214a8480b"];
+
+    function setup() {
+
+        canvas = createCanvas(710, 400);
+
+        var NameInput;
+        var InterestedCharityInput;
+        var PaymentMethodInput;
+        var DonatedCharitiesInput;
+        var DonatedAmountInput;
+        var DonatedDatesInput;
+        var submitButton;
+        var PasswordInput;
+        var EmailInput;
+
+
+
+        EmailInput = createInput('Email', 'email');
+        EmailInput.position(480, 65);
+        NameInput = createInput('Name');
+        NameInput.position(480, 115);
+        InterestedCharityInput = createInput('Interested Charity');
+        InterestedCharityInput.position(480, 165);
+        PaymentMethodInput = createInput('Payment Method');
+        PaymentMethodInput.position(480, 215);
+        DonatedCharitiesInput = createInput('Donated Charities');
+        DonatedCharitiesInput.position(480, 265);
+        DonatedAmountInput = createInput('Donated Amount');
+        DonatedAmountInput.position(480, 315);
+        DonatedDatesInput = createInput('Donated Dates');
+        DonatedDatesInput.position(480, 365);
+        PasswordInput = createInput('', 'password');
+        PasswordInput.position(480, 415);
+        submitButton = createButton('Submit');
+        submitButton.position(535, 455);
+        greeting = createElement('h4', 'Email');
+        greeting.position(480, 20);
+        greeting = createElement('h4', 'Name');
+        greeting.position(480, 70);
+        greeting = createElement('h4', 'Interested Charity');
+        greeting.position(480, 120);
+        greeting = createElement('h4', 'Payment Method');
+        greeting.position(480, 170);
+        greeting = createElement('h4', 'Donated Charities');
+        greeting.position(480, 220);
+        greeting = createElement('h4', 'Donated Amount');
+        greeting.position(480, 270);
+        greeting = createElement('h4', 'Donated Dates');
+        greeting.position(480, 320);
+        greeting = createElement('h4', 'Password');
+        greeting.position(480, 370);
+        submitButton.mousePressed(ResetPage);
+
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDvYLjgtWFM2_v7EE7uGZMPLBkuGS3N_1I",
+            authDomain: "visacharity.firebaseapp.com",
+            databaseURL: "https://visacharity.firebaseio.com",
+            projectId: "visacharity",
+            storageBucket: "visacharity.appspot.com",
+            messagingSenderId: "508896557325",
+            appId: "1:508896557325:web:7cc92e67c2df2c022fd844",
+            measurementId: "G-3VL2WDL31R"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        console.log(firebase)
+
+
+        function submitData() {
+
+
+            var str = InterestedCharityInput.value();
+            var res = str.split(",");
+            console.log(res);
+            var str = PaymentMethodInput.value();
+            var res1 = str.split(",");
+            console.log(res1);
+            var str = DonatedCharitiesInput.value();
+            var res2 = str.split(",");
+            console.log(res2);
+            var str = DonatedAmountInput.value();
+            var res3 = str.split(",");
+            console.log(res3);
+            var str = DonatedDatesInput.value();
+            var res4 = str.split(",");
+            console.log(res4);
+            var data = {
+                Email: EmailInput.value(),
+                Name: NameInput.value(),
+                InterestedCharity: res,
+                PaymentMethod: res1,
+                ProfilePicture: imglink,
+                DonatedCharities: res2,
+                DonatedAmount: res3,
+                DonatedDates: res4
+            }
+            var database = firebase.database();
+            var ref = database.ref('Personal_Data')
+            ref.push(data);
+
+
+        }
+
+        function emailAuth() {
+            const email = EmailInput.value();
+            const pass = PasswordInput.value()
+            const auth = firebase.auth();
+            //Sign In
+            const promise = auth.createUserWithEmailAndPassword(email, pass);
+            promise.catch(e => console.log(e.message));
+
+            firebase.auth().onAuthStateChanged(firebaseUser => {
+                if (firebaseUser) {
+                    console.log(firebaseUser);
+                    console.log(data)
+                } else {
+                    console.log('not logged in');
+                }
+            });
+        }
+
+        function ResetPage() {
+            emailAuth();
+            submitData();
+            clear();
+            console.log(imglink)
+            imglink = ["https://firebasestorage.googleapis.com/v0/b/visacharity.appspot.com/o/Thu%20Jun%2025%202020%2023%3A50%3A27%20GMT%2B0530%20(India%20Standard%20Time)-Gender_Default.jpg?alt=media&token=a66c34e4-79d8-4384-b779-8a6214a8480b"];
+            console.log(imglink)
+            const image = document.querySelector('#image')
+            image.src = "https://firebasestorage.googleapis.com/v0/b/visacharity.appspot.com/o/Thu%20Jun%2025%202020%2023%3A50%3A27%20GMT%2B0530%20(India%20Standard%20Time)-Gender_Default.jpg?alt=media&token=a66c34e4-79d8-4384-b779-8a6214a8480b"
+                <!-- const photo = document.querySelector('#photo') -->
+                <!-- photo.type = "file" -->
+            setup();
+        }
+    }
+
+    function uploadImage() {
+
+        <!-- Initailising the Firebase System -->
+        const ref = firebase.storage().ref()
+
+        <!-- To Upload the picture picking the element from the id -->
+        const file = document.querySelector("#photo").files[0]
+
+        <!-- To give the uploaded Image a file name-->
+        const name = new Date() + '-' + file.name
+
+        const metadata = {
+            contentType: file.type
+        }
+
+        const task = ref.child(name).put(file, metadata)
+
+        task
+            .then(snapshot => snapshot.ref.getDownloadURL())
+            .then(url => {
+                console.log(url)
+                alert("Image Upload Successful")
+                const image = document.querySelector('#image')
+                image.src = url
+                imglink[0] = url;
+                console.log(imglink)
+            })
+    }
+</script>
+
+</html>

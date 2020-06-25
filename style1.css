@@ -1,0 +1,18 @@
+.buttonselect {
+    position: absolute;
+    top: 320px;
+    left: 735px;
+}
+
+.buttonupload {
+    position: absolute;
+    top: 350px;
+    left: 755px;
+}
+
+img {
+    position: absolute;
+    top: 50px;
+    left: 700px;
+    border-radius: 50%;
+}

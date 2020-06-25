@@ -1,0 +1,36 @@
+.email {
+    position: absolute;
+    top: 250px;
+    left: 505px;
+}
+
+.pass {
+    position: absolute;
+    top: 290px;
+    left: 505px;
+}
+
+.btn-action {
+    position: absolute;
+    top: 335px;
+    left: 525px;
+}
+
+.btn-secondary {
+    position: absolute;
+    top: 335px;
+    left: 595px;
+}
+
+.btn-logout {
+    position: absolute;
+    top: 370px;
+    left: 555px;
+}
+
+.para {
+    position: absolute;
+    top: 185px;
+    left: 530px;
+    font-size: 25px;
+}

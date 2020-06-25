@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,500" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <p class="para"><b>Login Page</b></p>
+        <input id="txtEmail" type="email" placeholder="Email" class="email">
+        <input id="txtPassword" type="password" placeholder="Password" class="pass">
+        <button id="btnLogin" class="btn-action">Log In</button>
+        <a href=signup.html><button class="btn-secondary">Sign Up</button></a>
+        <button id="btnLogout" class="btn-logout">Log Out</button>
+    </div>
+</body>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.15.4/firebase-analytics.js"></script>
+<script>
+    var imglink = [];
+    var otherimg = [];
+
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyDvYLjgtWFM2_v7EE7uGZMPLBkuGS3N_1I",
+        authDomain: "visacharity.firebaseapp.com",
+        databaseURL: "https://visacharity.firebaseio.com",
+        projectId: "visacharity",
+        storageBucket: "visacharity.appspot.com",
+        messagingSenderId: "508896557325",
+        appId: "1:508896557325:web:7cc92e67c2df2c022fd844",
+        measurementId: "G-3VL2WDL31R"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    console.log(firebase)
+
+    //Get Elements
+    const txtEmail = document.getElementById('txtEmail');
+    const txtPassword = document.getElementById('txtPassword');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnSignUp = document.getElementById('btnSignUp');
+    const btnLogout = document.getElementById('btnLogout');
+
+    //Add Login event
+    btnLogin.addEventListener('click', e => {
+        // Get email and Password
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth();
+        //Sign In
+        const promise = auth.signInWithEmailAndPassword(email, pass);
+        promise.catch(e => console.log(e.message));
+    });
+
+    <!-- btnSignUp.addEventListener('click', e => { -->
+    // Get email and Password
+    <!-- const email = txtEmail.value; -->
+    <!-- const pass = txtPassword.value; -->
+    <!-- const auth = firebase.auth(); -->
+    //Sign In
+    <!-- const promise = auth.createUserWithEmailAndPassword(email, pass); -->
+    <!-- promise.catch(e => console.log(e.message)); -->
+    <!-- }); -->
+
+    btnLogout.addEventListener('click', e => {
+        firebase.auth().signOut();
+    });
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if (firebaseUser) {
+            console.log(firebaseUser);
+        } else {
+            console.log('not logged in');
+        }
+    });
+</script>
+
+</html>
